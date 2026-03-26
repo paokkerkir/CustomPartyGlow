@@ -1,5 +1,5 @@
 -- ============================================================
--- CustomPartyGlow - Vanilla WoW 1.12 / Turtle WoW Compatible
+-- CustomPartyGlow - Vanilla WoW 1.12 / TWoW Compatible
 -- ============================================================
 
 -- Saved Variables (must also be declared in the .toc file as:
