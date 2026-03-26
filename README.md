@@ -29,6 +29,10 @@ Make sure the folder contains `CustomPartyGlow.toc` and `CustomPartyGlow.lua` at
 - Blips only appear when you are in a party or raid
 - Setting size to 16 hides all blips (acts as a toggle)
 
+## Credits
+
+-bernaldani, original curseforge author.
+
 ## License
 
 -MIT License
