@@ -1,7 +1,7 @@
 ## Interface: 11200
 ## Title: CustomPartyGlow
 ## Notes: Glowing class-coloured blips for party/raid members on the World Map
-## Author: You
+## Author: paokkerkir
 ## Version: 1.0
 ## SavedVariables: ClassGlowMapIconsDB
 
