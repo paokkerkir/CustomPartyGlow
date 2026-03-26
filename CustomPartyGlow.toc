@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: CustomPartyGlow
+## Notes: Glowing class-coloured blips for party/raid members on the World Map
+## Author: You
+## Version: 1.0
+## SavedVariables: ClassGlowMapIconsDB
+
+CustomPartyGlow.lua
