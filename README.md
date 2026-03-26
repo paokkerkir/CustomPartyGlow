@@ -35,4 +35,4 @@ Make sure the folder contains `CustomPartyGlow.toc` and `CustomPartyGlow.lua` at
 
 ## License
 
--MIT License
+-Apache License Version 2.0
