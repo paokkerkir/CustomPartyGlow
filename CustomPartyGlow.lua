@@ -1,5 +1,5 @@
 -- ============================================================
--- CustomPartyGlow - Vanilla WoW 1.12 / TWoW Compatible
+-- CustomPartyGlow - Vanilla WoW 1.12 / Turtle WoW Compatible
 -- ============================================================
 
 -- Saved Variables (must also be declared in the .toc file as:
@@ -96,10 +96,14 @@ local function GetCanvasSize()
 end
 
 -- ── UpdatePartyIcons ─────────────────────────────────────────
+-- Blips are bare textures on WorldMapDetailFrame so they never
+-- intercept mouse clicks (only frames capture mouse events).
 local function UpdatePartyIcons()
+    local parent = WorldMapDetailFrame or WorldMapFrame
+
     -- Hide all existing blips first
-    for _, blip in pairs(customBlips) do
-        blip:Hide()
+    for _, tex in pairs(customBlips) do
+        tex:Hide()
     end
 
     -- Build unit list
@@ -123,12 +127,10 @@ local function UpdatePartyIcons()
 
     local cw, ch = GetCanvasSize()
     local scale   = GetDetailScale()
-    local strata  = GetMapStrata()
 
     -- Compensate icon size so blips stay constant on screen when
     -- Magnify (or any other addon) zooms WorldMapDetailFrame.
-    local adjSize     = iconSize / scale
-    local adjGlowSize = adjSize * 2
+    local adjGlowSize = (iconSize / scale) * 2
 
     for _, unit in ipairs(units) do
         if UnitExists(unit) then
@@ -136,52 +138,34 @@ local function UpdatePartyIcons()
             local x, y = GetPlayerMapPosition(unit)
             if x and y and x > 0 and y > 0 then
 
-                local blip = customBlips[unit]
-                if not blip then
-                    blip = CreateFrame("Frame", nil, WorldMapDetailFrame or WorldMapFrame)
-                    blip:SetFrameLevel(2000)
-                    blip:SetWidth(adjSize)
-                    blip:SetHeight(adjSize)
-
-                    -- Glow texture
-                    local border = blip:CreateTexture(nil, "OVERLAY")
-                    border:SetTexture("Interface\\GLUES\\Models\\UI_Draenei\\GenericGlow64")
-                    border:SetBlendMode("ADD")
-                    border:SetAlpha(0.6)
-                    blip.border = border
+                local tex = customBlips[unit]
+                if not tex then
+                    tex = parent:CreateTexture(nil, "ARTWORK")
+                    tex:SetTexture("Interface\\Cooldown\\star4")
+                    tex:SetBlendMode("ADD")
+                    tex:SetAlpha(0.6)
 
                     -- Class colour
                     local _, classToken = UnitClass(unit)
                     local color = (classToken and classColorsByToken[classToken]) or {1, 1, 0}
-                    border:SetVertexColor(color[1], color[2], color[3])
+                    tex:SetVertexColor(color[1], color[2], color[3])
 
-                    border:SetWidth(adjGlowSize)
-                    border:SetHeight(adjGlowSize)
-                    border:SetPoint("CENTER", blip, "CENTER", 0, 0)
-
-                    RegisterPulse(border)
-
-                    customBlips[unit] = blip
+                    RegisterPulse(tex)
+                    customBlips[unit] = tex
                 else
-                    -- Refresh colour & size on existing blip
+                    -- Refresh colour on existing blip
                     local _, classToken = UnitClass(unit)
                     local color = (classToken and classColorsByToken[classToken]) or {1, 1, 0}
-                    blip.border:SetVertexColor(color[1], color[2], color[3])
-
-                    blip:SetWidth(adjSize)
-                    blip:SetHeight(adjSize)
-                    blip.border:SetWidth(adjGlowSize)
-                    blip.border:SetHeight(adjGlowSize)
+                    tex:SetVertexColor(color[1], color[2], color[3])
                 end
 
-                -- Match the map's current strata (Magnify changes this)
-                blip:SetFrameStrata(strata)
+                tex:SetWidth(adjGlowSize)
+                tex:SetHeight(adjGlowSize)
 
-                -- Position: TOPLEFT of the detail frame + fractional offset
-                blip:ClearAllPoints()
-                blip:SetPoint("CENTER", WorldMapDetailFrame or WorldMapFrame,
-                              "TOPLEFT", x * cw, -y * ch)
-                blip:Show()
+                -- Position: relative to TOPLEFT of the detail frame
+                tex:ClearAllPoints()
+                tex:SetPoint("CENTER", parent, "TOPLEFT", x * cw, -y * ch)
+                tex:Show()
             end
         end
     end
@@ -316,8 +300,8 @@ function ShowSizeSlider()
             if value > 16 then
                 UpdatePartyIcons()
             else
-                for _, blip in pairs(customBlips) do
-                    blip:Hide()
+                for _, tex in pairs(customBlips) do
+                    tex:Hide()
                 end
             end
         end)
