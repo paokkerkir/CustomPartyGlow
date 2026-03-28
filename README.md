@@ -27,7 +27,6 @@ Make sure the folder contains `CustomPartyGlow.toc` and `CustomPartyGlow.lua` at
 - `/cpg` or `/custompartyglow` to open the size slider
 - A small button also appears on the top-right corner of the world map
 - Blips only appear when you are in a party or raid
-- Setting size to 16 hides all blips (acts as a toggle)
 
 ## Credits
 
