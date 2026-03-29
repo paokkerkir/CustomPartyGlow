@@ -140,7 +140,7 @@ local function UpdatePartyIcons()
 
                 local tex = customBlips[unit]
                 if not tex then
-                    tex = parent:CreateTexture(nil, "ARTWORK")
+                    tex = parent:CreateTexture(nil, "OVERLAY")
                     tex:SetTexture("Interface\\Cooldown\\star4")
                     tex:SetBlendMode("ADD")
                     tex:SetAlpha(0.6)
